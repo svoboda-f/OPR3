@@ -1,0 +1,154 @@
+<h3 class="text-lg font-bold">Registrace</h3>
+<div class="w-full flex">
+  <ul class="steps mx-auto">
+    <li class="step step-primary">Přihlašovací údaje</li>
+    <li class="step" [ngClass]="{ 'step-primary': !isFirstStepInRegistration }">
+      Informace
+    </li>
+  </ul>
+</div>
+<form [formGroup]="fg" (ngSubmit)="submit()">
+  <div *ngIf="isFirstStepInRegistration; then firstStep; else info"></div>
+  <ng-template #firstStep>
+    <div class="form-control mx-auto w-fit">
+      <label class="label">
+        <span class="label-text">Uživ. jméno</span>
+      </label>
+      <input
+        type="text"
+        class="input input-bordered w-full max-w-xs"
+        [ngClass]="{
+          'input-error':
+            fg.controls['username'].touched && fg.controls['username'].invalid
+        }"
+        formControlName="username"
+        required
+      />
+      <label class="label">
+        <span class="label-text-alt" *ngIf="errors.usernameExist"
+          >Uživatel s tímto jménem již existuje</span
+        >
+      </label>
+    </div>
+    <div class="form-control w-fit mx-auto">
+      <label class="label">
+        <span class="label-text">Heslo</span>
+      </label>
+      <input
+        type="password"
+        class="input input-bordered w-full max-w-xs"
+        formControlName="password"
+        minlength="8"
+        [ngClass]="{
+          'input-error':
+            fg.controls['password'].touched && fg.controls['password'].invalid
+        }"
+        required
+      />
+      <label
+        class="label"
+        *ngIf="
+          fg.controls['password'].touched && fg.controls['password'].invalid
+        "
+      >
+        <span class="label-text-alt text-error"
+          >Heslo musí být dlouhé alespoň 8 znaků</span
+        >
+      </label>
+    </div>
+    <div class="form-control w-fit mx-auto">
+      <label class="label">
+        <span class="label-text">Heslo znovu</span>
+      </label>
+      <input
+        type="password"
+        class="input input-bordered w-full max-w-xs"
+        formControlName="passwordAgain"
+        [ngClass]="{
+          'input-error':
+            fg.controls['passwordAgain'].invalid &&
+            fg.controls['passwordAgain'].touched
+        }"
+        required
+      />
+      <label
+        class="label"
+        *ngIf="
+          fg.controls['passwordAgain'].invalid &&
+          fg.controls['passwordAgain'].touched
+        "
+      >
+        <span class="label-text-alt text-error">Hesla se neshodují</span>
+      </label>
+    </div>
+    <div class="flex flex-row-reverse mt-4">
+      <button type="button" class="btn btn-primary" (click)="next()">
+        Další
+      </button>
+    </div>
+  </ng-template>
+  <ng-template #info>
+    <div class="form-control w-80 mx-auto">
+      <label class="label">
+        <span class="label-text">Pohlaví</span>
+      </label>
+      <select class="select select-bordered w-full max-w-xs">
+        <option disabled selected>Prosím vyberte...</option>
+        <option value="male">Muž</option>
+        <option value="female">Žena</option>
+      </select>
+    </div>
+    <div class="form-control w-80 mx-auto">
+      <label class="label">
+        <span class="label-text">Výška</span>
+      </label>
+      <input
+        type="number"
+        class="input input-bordered w-full max-w-xs"
+        [ngClass]="{
+          'input-error':
+            fg.controls['height'].touched && fg.controls['height'].invalid
+        }"
+        formControlName="height"
+        min="50"
+        max="250"
+        required
+      />
+      <label class="label">
+        <span class="label-text-alt"></span>
+      </label>
+    </div>
+    <div class="form-control mx-auto w-80">
+      <label class="label">
+        <span class="label-text">Datum narození</span>
+      </label>
+      <div class="relative">
+        <input
+          type="date"
+          class="input input-bordered w-80 max-w-xs -indent-[500px] text-transparent"
+          [ngClass]="{
+            'input-error':
+              fg.controls['dateOfBirth'].touched &&
+              fg.controls['dateOfBirth'].invalid
+          }"
+          formControlName="dateOfBirth"
+          min="50"
+          max="250"
+          required
+          (click)="dateInputClick($event)"
+          (change)="dateChange($event)"
+        />
+        <span class="absolute top-3 left-5 pointer-events-none">{{
+          dateText
+        }}</span>
+      </div>
+      <label class="label">
+        <span class="label-text-alt"></span>
+      </label>
+    </div>
+    <div class="flex justify-between">
+      <button class="btn" (click)="backClick()">Zpět</button>
+      <button class="btn btn-primary" type="submit">Registrovat</button>
+    </div>
+  </ng-template>
+</form>

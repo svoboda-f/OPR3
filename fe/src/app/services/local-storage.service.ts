@@ -11,10 +11,11 @@ const CALCULATOR_ENTRIES = 'calculator-entries';
 export class LocalStorageService {
   constructor() {}
 
-  getTheme(): string {
+  getTheme(): Theme {
     const theme = localStorage.getItem(THEME);
-    //@ts-ignore
-    if (theme !== Theme.DARK || theme !== Theme.LIGHT || !theme) {
+    
+    if ((theme !== Theme.DARK && theme !== Theme.LIGHT) || !theme) {
+      console.log('No theme, setting theme to light theme');
       this.setTheme(Theme.LIGHT);
       return Theme.LIGHT;
     }

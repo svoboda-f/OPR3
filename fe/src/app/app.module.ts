@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,8 +9,11 @@ import { AboutComponent } from './components/about/about.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
 import { DiaryComponent } from './components/diary/diary.component';
-import { AuthDialogComponent } from './components/auth-dialog/auth-dialog.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { LoginComponent } from './components/dialog/login/login.component';
+import { RegisterComponent } from './components/dialog/register/register.component';
+import { NewEntryComponent } from './components/dialog/new-entry/new-entry.component';
 
 @NgModule({
   declarations: [
@@ -19,16 +22,19 @@ import { ProfileComponent } from './components/profile/profile.component';
     NavbarComponent,
     CalculatorComponent,
     DiaryComponent,
-    AuthDialogComponent,
-    ProfileComponent
+    DialogComponent,
+    ProfileComponent,
+    LoginComponent,
+    RegisterComponent,
+    NewEntryComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
