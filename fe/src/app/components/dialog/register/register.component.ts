@@ -2,12 +2,10 @@ import {
   Component,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +17,7 @@ export class RegisterComponent implements OnInit, OnChanges {
     username: [undefined],
     password: [undefined],
     passwordAgain: [undefined],
-    sex: [undefined],
+    sex: [''],
     dateOfBirth: [undefined],
     height: [undefined],
   });
@@ -39,14 +37,13 @@ export class RegisterComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const isDialogOpen = changes['isDialogOpen'].currentValue;
-    if(isDialogOpen) {
+    if (isDialogOpen) {
       this.fg.reset();
+      this.isFirstStepInRegistration = true;
     }
   }
 
   ngOnInit(): void {}
-
-  ngOnDestroy(): void {}
 
   next(): void {
     // this.fg.markAllAsTouched();

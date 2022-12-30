@@ -92,8 +92,18 @@
       <label class="label">
         <span class="label-text">Pohlaví</span>
       </label>
-      <select class="select select-bordered w-full max-w-xs">
-        <option disabled selected>Prosím vyberte...</option>
+      <select
+        class="select select-bordered w-full max-w-xs"
+        formControlName="sex"
+        required
+        [ngClass]="{
+          'select-error':
+            fg.controls['sex'].touched && fg.controls['sex'].invalid
+        }"
+      >
+        <option disabled [defaultSelected]="true" value="">
+          Prosím vyberte...
+        </option>
         <option value="male">Muž</option>
         <option value="female">Žena</option>
       </select>
