@@ -1,31 +1,37 @@
 package cz.osu.be.model;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
+    private long id;
     private String username;
     private String password;
-
-    // private UserInfo userInfo;
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private UserInfo userInfo;
 
 
     public AppUser() {}
 
-    public AppUser(String username, String password/*, UserInfo userInfo*/) {
+    public AppUser(String username, String password, UserInfo userInfo) {
         this.username = username;
         this.password = password;
-        // this.userInfo = userInfo;
+        this.userInfo = userInfo;
+    }
+
+    public long getId() {
+        return this.id;
     }
 
     public String getUsername() {
@@ -36,7 +42,11 @@ public class AppUser {
         return this.password;
     }
 
-    // public UserInfo getUserInfo() {
-    //     return this.userInfo;
-    // }
+    public UserInfo getUserInfo() {
+        return this.userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
 }
