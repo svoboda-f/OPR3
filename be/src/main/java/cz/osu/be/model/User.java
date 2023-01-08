@@ -1,6 +1,5 @@
 package cz.osu.be.model;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -9,9 +8,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
-public class AppUser {
+@Table(name = "app_user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -21,10 +22,10 @@ public class AppUser {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private UserInfo userInfo;
 
+    public User() {
+    }
 
-    public AppUser() {}
-
-    public AppUser(String username, String password, UserInfo userInfo) {
+    public User(String username, String password, UserInfo userInfo) {
         this.username = username;
         this.password = password;
         this.userInfo = userInfo;
@@ -40,6 +41,10 @@ public class AppUser {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public UserInfo getUserInfo() {

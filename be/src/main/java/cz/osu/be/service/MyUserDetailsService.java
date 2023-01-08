@@ -8,19 +8,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import cz.osu.be.model.AppUser;
+import cz.osu.be.model.User;
 import cz.osu.be.model.AppUserDetails;
-import cz.osu.be.repository.AppUserRepository;
+import cz.osu.be.repository.UserRepository;
 
 @Service
-public class AppUserDetailsService implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private AppUserRepository appUserRepository;
+    private UserRepository appUserRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Optional<AppUser> user = appUserRepository.findByUsername(username);
+        Optional<User> user = appUserRepository.findByUsername(username);
         if (user.isEmpty())
             throw new UsernameNotFoundException("User with name " + username + " doesn't exist");
         UserDetails ret = new AppUserDetails(user.get().getUsername(), user.get().getPassword());

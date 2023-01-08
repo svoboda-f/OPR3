@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import cz.osu.be.service.AppUserDetailsService;
+import cz.osu.be.service.MyUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -21,10 +21,10 @@ import cz.osu.be.service.AppUserDetailsService;
 public class WebSecurityConfig {
 
     @Autowired
-    private AppUserDetailsService appUserDetailsService;
+    private MyUserDetailsService appUserDetailsService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired 
+    @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
     @Bean
@@ -36,7 +36,7 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        
+
         return http.build();
     }
 

@@ -27,6 +27,10 @@ public class Entry {
         this.weight = weight;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     public LocalDate getDate() {
         return this.date;
     }
