@@ -1,10 +1,22 @@
-<div *ngIf="user$ | async as user">
-  <input type="checkbox" id="auth-dialog" class="modal-toggle" (change)="dialogClose($event)"/>
+<div>
+<!-- <div *ngIf="user | async as user"> -->
+<input
+    type="checkbox"
+    id="auth-dialog"
+    class="modal-toggle"
+    (change)="dialogClose($event)"
+  />
   <label for="auth-dialog" class="modal cursor-pointer">
     <label class="modal-box relative" for="totalrandomstring">
-      <!-- <app-login [events]="eventsSubject.asObservable()"></app-login> -->
-      <app-register [isDialogOpen]="isDialogOpen"></app-register>
-      <!-- <app-new-entry [events]="eventsSubject.asObservable()"></app-new-entry> -->
+      <app-login
+        [isDialogOpen]="isDialogOpen"
+        *ngIf="!(user | async) && dialogType === 'login'"
+      ></app-login>
+      <app-register
+        [isDialogOpen]="isDialogOpen"
+        *ngIf="!(user | async) && dialogType === 'register'"
+      ></app-register>
+      <app-new-entry [isDialogOpen]="isDialogOpen" *ngIf="user | async"></app-new-entry>
     </label>
   </label>
 </div>

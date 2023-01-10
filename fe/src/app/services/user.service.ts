@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserInfo } from '../models/user-info';
 import { LocalStorageService } from './local-storage.service';
@@ -19,16 +19,20 @@ export class UserService {
     private readonly http: HttpClient
   ) {}
 
+  headers = { 'access-control-allow-origin': 'http://localhost:4200/' };
+
   refreshUser(): void {
-    this.http.get<UserInfo>(`${SERVER_URL}/info/`).subscribe({
-      next: (user) => {
-        this.currentUser.next(user);
-      },
-      error: (error) => {
-        console.log(error);
-        this.clearUser();
-      },
-    });
+    this.http
+      .get<UserInfo>(`${SERVER_URL}/user-info`, { headers: this.headers })
+      .subscribe({
+        next: (user) => {
+          this.currentUser.next(user);
+        },
+        error: (error) => {
+          console.log(error);
+          this.clearUser();
+        },
+      });
   }
 
   clearUser(): void {

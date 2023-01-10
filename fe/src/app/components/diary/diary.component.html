@@ -1,1 +1,57 @@
-<p>diary works!</p>
+<div>
+  <div class="overflow-x-auto w-full">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Date</th>
+          <th>Weight</th>
+          <th>BMI</th>
+          <th>BMR</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let entry of entries">
+        <tr>
+          <td>
+            <input type="radio" name="entry" class="radio" />
+          </td>
+          <td>
+            {{ entry.date }}
+          </td>
+          <td>
+            {{ entry.weight }}
+          </td>
+          <td>{{ entry.bmi }}</td>
+          <td>{{ entry.bmr }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th>Date</th>
+          <th>Weight</th>
+          <th>BMI</th>
+          <th>BMR</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div>
+    <select
+      class="select select-bordered w-fit"
+      (change)="sizesValueChange($event)"
+    >
+      <option *ngFor="let size of sizes">{{ size }}</option>
+    </select>
+  </div>
+  <div class="btn-group">
+    <button
+      class="btn"
+      (click)="pageButtonClick($event)"
+      [ngClass]="{ 'btn-primary': page === currentPage }"
+      *ngFor="let page of pages"
+    >
+      {{ page }}
+    </button>
+  </div>
+</div>

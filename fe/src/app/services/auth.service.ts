@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { UserInfo } from '../models/user-info';
 import { LocalStorageService } from './local-storage.service';
 import { UserService } from './user.service';
 
@@ -20,10 +21,14 @@ export class AuthService {
     private readonly userService: UserService
   ) {}
 
+  register(username: string, password: string, userInfo: UserInfo): Observable<any> {
+    return this.http.post(`${SERVER_URL}/user/register`, {username, password, userInfo});
+  }
+
   login(username: string, password: string): Observable<any> {
     return this.http
       .post(
-        `${SERVER_URL}/auth/login`,
+        `${SERVER_URL}/user/login`,
         { username, password },
         httpOptions
       )

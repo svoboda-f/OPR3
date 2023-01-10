@@ -82,9 +82,9 @@
       </label>
     </div>
     <div class="flex flex-row-reverse mt-4">
-      <button type="button" class="btn btn-primary" (click)="next()">
+      <span type="button" class="btn btn-primary" (click)="next($event)">
         Další
-      </button>
+      </span>
     </div>
   </ng-template>
   <ng-template #info>
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="flex justify-between">
-      <button class="btn" (click)="backClick()">Zpět</button>
+      <button class="btn" (click)="backClick()" type="button">Zpět</button>
       <button class="btn btn-primary" type="submit">Registrovat</button>
     </div>
   </ng-template>

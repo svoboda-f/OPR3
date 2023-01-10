@@ -14,6 +14,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { LoginComponent } from './components/dialog/login/login.component';
 import { RegisterComponent } from './components/dialog/register/register.component';
 import { NewEntryComponent } from './components/dialog/new-entry/new-entry.component';
+import { authInterceptorProviders } from './Auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import { NewEntryComponent } from './components/dialog/new-entry/new-entry.compo
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    authInterceptorProviders
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -4,11 +4,13 @@ import { CalculatorEntry } from '../models/calculator-entry';
 
 const THEME = 'theme';
 const CALCULATOR_ENTRIES = 'calculator-entries';
+const TOKEN_KEY = 'auth-token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalStorageService {
+  
   constructor() {}
 
   getTheme(): Theme {
@@ -42,11 +44,16 @@ export class LocalStorageService {
     localStorage.removeItem(CALCULATOR_ENTRIES);
   }
 
-  saveToken(token: any) {
-    throw new Error('Method not implemented.');
+  saveToken(token: string): void {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.setItem(TOKEN_KEY, token);
   }
 
-  signOut() {
-    throw new Error('Method not implemented.');
+  getToken() : string | null {
+    return localStorage.getItem(TOKEN_KEY);
+  }
+
+  signOut(): void{
+    localStorage.removeItem(TOKEN_KEY);
   }
 }

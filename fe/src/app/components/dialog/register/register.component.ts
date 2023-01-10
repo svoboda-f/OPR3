@@ -6,6 +6,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -33,7 +34,10 @@ export class RegisterComponent implements OnInit, OnChanges {
     passwordsDontMatch?: boolean;
   } = {};
 
-  constructor(private readonly formBuilder: FormBuilder) {}
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly authService: AuthService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const isDialogOpen = changes['isDialogOpen'].currentValue;
@@ -45,7 +49,8 @@ export class RegisterComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {}
 
-  next(): void {
+  next($event: Event): void {
+    $event.preventDefault();
     // this.fg.markAllAsTouched();
     const form = {
       username: this.fg.controls['username'],
@@ -60,6 +65,7 @@ export class RegisterComponent implements OnInit, OnChanges {
       return;
     }
     this.isFirstStepInRegistration = false;
+    console.log('next called');
   }
 
   dateInputClick($event: Event): void {
@@ -76,5 +82,17 @@ export class RegisterComponent implements OnInit, OnChanges {
     this.isFirstStepInRegistration = true;
   }
 
-  submit(): void {}
+  submit(): void {
+    this.authService
+      .register(
+        this.fg.controls['username'].value,
+        this.fg.controls['password'].value,
+        {
+          sex: this.fg.controls['sex'].value,
+          height: this.fg.controls['height'].value,
+          dateOfBirth: this.fg.controls['dateOfBirth'].value,
+        }
+      )
+      .subscribe({ next: (response) => {console.log(response)}, error: (error) => {console.log(error)} });
+  }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
+import { DialogType } from 'src/app/enums/dialog-type';
 import { Theme } from 'src/app/enums/theme';
 import { UserInfo } from 'src/app/models/user-info';
 import { ThemeService } from 'src/app/services/theme.service';
@@ -12,8 +13,9 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class NavbarComponent implements OnInit {
   user$?: Observable<UserInfo>;
-  nicknameInitial: string = 'C';
+  nicknameInitial?: string;
   theme?: Theme;
+  dialogType?: DialogType;
 
   constructor(
     private readonly router: Router,
@@ -25,14 +27,27 @@ export class NavbarComponent implements OnInit {
     this.theme = this.themeService.getTheme();
     this.userService.refreshUser();
     this.user$ = this.userService.getCurrentUser();
+    this.user$.subscribe((user) => (this.nicknameInitial = user?.username?.charAt(0)));
+    console.log(this.user$);
   }
 
   isActive(routerLink: string): boolean {
     return this.router.isActive(routerLink, true);
   }
 
+  loginClick(): void {
+    this.dialogType = DialogType.LOGIN;
+  }
+
+  registerClick(): void {
+    this.dialogType = DialogType.REGISTER;
+  }
+
   logoutClick(): void {
     this.userService.clearUser();
+    if (this.router.url === '/diary' || this.router.url === '/profile') {
+      this.router.navigate(['/']);
+    }
   }
 
   swapTheme(): void {
