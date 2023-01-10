@@ -38,12 +38,12 @@ public class AuthService {
     @Autowired
     private UserRepository appUserRepository;
 
-    public Map<String, Object> login(Auth auth) {
+    public Map<String, Object> login(User user) {
         Authentication authentication;
         Map<String, Object> ret = new LinkedHashMap<>();
         try {
             authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(auth.getUsername(), auth.getPassword()));
+                    .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         } catch (DisabledException | BadCredentialsException exception) {
             ret.put("error", "Invalid credentials");
             return ret;

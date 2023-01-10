@@ -92,6 +92,7 @@ public class UserInfo {
 
     public Map<String, Object> getUserInfo() {
         Map<String, Object> userInfo = new LinkedHashMap<>();
+        userInfo.put("username", this.user.getUsername());
         userInfo.put("dateOfBirth", this.dateOfBirth);
         userInfo.put("height", this.height);
         userInfo.put("sex", this.sex);

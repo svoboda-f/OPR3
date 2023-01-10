@@ -32,6 +32,18 @@ public class EntryService {
         return this.entryRepository.save(newEntry);
     }
 
+    public void deleteEntry(Entry entry) {
+        User currentUser = this.authService.getCurrentUser();
+        currentUser.getUserInfo().getEntries().remove(entry);        
+    }
+
+    public Entry updateEntry(Entry entry) {
+        Entry updatedEntry = this.entryRepository.findById(entry.getId()).get();
+        updatedEntry.setDate(entry.getDate());
+        updatedEntry.setWeight(entry.getWeight());
+        return this.entryRepository.save(updatedEntry);
+    }
+
     public Map<String, Object> getEntriesPaginated(int offset, int size, String field, String direction) {
         Map<String, Object> ret = new LinkedHashMap<>();
         Page<Entry> page = this.entryRepository.getEntriesPaginated(this.authService.getCurrentUsersId(),

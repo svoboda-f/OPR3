@@ -38,5 +38,12 @@ public class Entry {
     public double getWeight() {
         return this.weight;
     }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
     
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 }

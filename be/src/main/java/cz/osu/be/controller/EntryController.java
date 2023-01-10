@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,7 @@ import cz.osu.be.model.Entry;
 import cz.osu.be.service.EntryService;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.0.10:4200"})
 @RequestMapping("/api/entries")
 public class EntryController {
 
@@ -25,6 +29,16 @@ public class EntryController {
     @PostMapping
     public Entry addEntry(@RequestBody Entry entry) {
         return this.entryService.addEntry(entry);
+    }
+
+    @DeleteMapping
+    public void deleteEntry(@RequestBody Entry entry) {
+        this.entryService.deleteEntry(entry);
+    }
+
+    @PatchMapping
+    public Entry updateEntry(@RequestBody Entry entry) {
+        return this.entryService.updateEntry(entry);
     }
 
     @GetMapping
