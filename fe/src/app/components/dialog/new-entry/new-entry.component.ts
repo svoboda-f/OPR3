@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { tmpdir } from 'os';
 import { Observable, Subscription } from 'rxjs';
 import { Entry } from 'src/app/models/entry';
@@ -24,7 +24,7 @@ export class NewEntryComponent implements OnInit, OnChanges {
   today: Date = new Date();
   dateText: string = this.today.toISOString().split('T')[0];
 
-  fg: FormGroup = this.formBuilder.group({
+  fg: UntypedFormGroup = this.formBuilder.group({
     date: [this.today.toISOString(), [Validators.required]],
     weight: [
       undefined,
@@ -33,7 +33,7 @@ export class NewEntryComponent implements OnInit, OnChanges {
   });
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly diary: DiaryService
   ) {}
 

@@ -8,7 +8,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,13 +21,13 @@ import { UserService } from 'src/app/services/user.service';
 export class LoginComponent implements OnInit, OnChanges {
   @Input() isDialogOpen?: boolean;
 
-  fg: FormGroup = this.formBuilder.group({
+  fg: UntypedFormGroup = this.formBuilder.group({
     username: [undefined],
     password: [undefined],
   });
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly authService: AuthService,
     private readonly userService: UserService,
     @Inject(DOCUMENT) public document: Document

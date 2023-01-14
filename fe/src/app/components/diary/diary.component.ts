@@ -23,7 +23,8 @@ export class DiaryComponent implements OnInit {
   currentPage: number = 1;
   entries: Entry[] = [];
   selectedEntry: Entry | null = null;
-  diaryType = "table";
+  diaryType = 'table';
+  toggleButtonText = 'Graf';
 
   constructor(
     private readonly diary: DiaryService,
@@ -111,6 +112,8 @@ export class DiaryComponent implements OnInit {
   }
 
   toggleGraph(): void {
-    this.diaryType = this.diaryType === "table" ? "graph" : "table";
+    const isTable = this.diaryType === 'table';
+    this.diaryType = isTable ? 'graph' : 'table';
+    this.toggleButtonText = isTable ? 'Záznamy' : 'Graf';
   }
 }

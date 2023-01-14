@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Sex } from 'src/app/enums/sex';
 import { CalculatorEntry } from 'src/app/models/calculator-entry';
 import { CalculatorService } from 'src/app/services/calculator.service';
@@ -19,16 +19,16 @@ export class CalculatorComponent implements OnInit {
 
   entries: CalculatorEntry[] = [];
 
-  calculatorResult: FormGroup = this.formBuilder.group({
-    age: new FormControl(undefined),
-    sex: new FormControl('male'),
-    height: new FormControl(undefined),
-    weight: new FormControl(undefined),
+  calculatorResult: UntypedFormGroup = this.formBuilder.group({
+    age: new UntypedFormControl(undefined),
+    sex: new UntypedFormControl('male'),
+    height: new UntypedFormControl(undefined),
+    weight: new UntypedFormControl(undefined),
   });
 
   constructor(
     private readonly localStorageService: LocalStorageService,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly calculatorService: CalculatorService
   ) {}
 

@@ -5,7 +5,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent implements OnInit, OnChanges {
   @Input() isDialogOpen?: boolean;
-  fg: FormGroup = this.formBuilder.group({
+  fg: UntypedFormGroup = this.formBuilder.group({
     username: [undefined],
     password: [undefined],
     passwordAgain: [undefined],
@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit, OnChanges {
   } = {};
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly authService: AuthService
   ) {}
 
