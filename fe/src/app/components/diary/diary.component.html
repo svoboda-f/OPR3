@@ -1,57 +1,89 @@
 <div>
-  <div class="overflow-x-auto w-full">
-    <table class="table w-full">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Date</th>
-          <th>Weight</th>
-          <th>BMI</th>
-          <th>BMR</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let entry of entries">
-        <tr>
-          <td>
-            <input type="radio" name="entry" class="radio" />
-          </td>
-          <td>
-            {{ entry.date }}
-          </td>
-          <td>
-            {{ entry.weight }}
-          </td>
-          <td>{{ entry.bmi }}</td>
-          <td>{{ entry.bmr }}</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th>Date</th>
-          <th>Weight</th>
-          <th>BMI</th>
-          <th>BMR</th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-  <div>
-    <select
-      class="select select-bordered w-fit"
-      (change)="sizesValueChange($event)"
-    >
-      <option *ngFor="let size of sizes">{{ size }}</option>
-    </select>
-  </div>
-  <div class="btn-group">
+  <button class="btn btn-secondary btn-sm" (click)="toggleGraph()">
+    UKAŽ GRAF
+  </button>
+  <ng-container *ngIf="diaryType === 'table'; else graph">
+    <div class="overflow-x-auto w-full">
+      <table class="table w-full">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Weight</th>
+            <th>BMI</th>
+            <th>BMR</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let entry of entries">
+          <tr>
+            <td>
+              <input
+                type="radio"
+                name="entry"
+                class="radio"
+                (click)="entryClick($event, entry)"
+              />
+            </td>
+            <td>
+              {{ entry.date }}
+            </td>
+            <td>
+              {{ entry.weight }}
+            </td>
+            <td>{{ entry.bmi }}</td>
+            <td>{{ entry.bmr }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Weight</th>
+            <th>BMI</th>
+            <th>BMR</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div>
+      <select
+        class="select select-bordered w-fit"
+        (change)="sizesValueChange($event)"
+      >
+        <option *ngFor="let size of sizes">{{ size }}</option>
+      </select>
+    </div>
+    <div class="btn-group">
+      <button
+        class="btn"
+        (click)="pageButtonClick($event)"
+        [ngClass]="{ 'btn-primary': page === currentPage }"
+        *ngFor="let page of pages"
+      >
+        {{ page }}
+      </button>
+    </div>
     <button
-      class="btn"
-      (click)="pageButtonClick($event)"
-      [ngClass]="{ 'btn-primary': page === currentPage }"
-      *ngFor="let page of pages"
+      class="btn btn-error"
+      (click)="deleteEntry()"
+      *ngIf="selectedEntry !== null"
     >
-      {{ page }}
+      Smazat
     </button>
-  </div>
+    <label
+      for="auth-dialog"
+      class="btn btn-circle btn-lg btn-secondary absolute right-5 bottom-5"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+        <path
+          d="M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z"
+          class="fill-secondary-content"
+        />
+        <path fill="none" d="M0 0h48v48H0z" />
+      </svg>
+    </label>
+  </ng-container>
+  <ng-template #graph>
+    <app-graph></app-graph>
+  </ng-template>
 </div>

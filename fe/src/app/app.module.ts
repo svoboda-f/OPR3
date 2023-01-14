@@ -15,6 +15,7 @@ import { LoginComponent } from './components/dialog/login/login.component';
 import { RegisterComponent } from './components/dialog/register/register.component';
 import { NewEntryComponent } from './components/dialog/new-entry/new-entry.component';
 import { authInterceptorProviders } from './Auth.interceptor';
+import { GraphComponent } from './components/graph/graph.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { authInterceptorProviders } from './Auth.interceptor';
     LoginComponent,
     RegisterComponent,
     NewEntryComponent,
+    GraphComponent,
   ],
   imports: [
     BrowserModule,

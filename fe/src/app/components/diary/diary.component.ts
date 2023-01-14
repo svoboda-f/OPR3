@@ -22,6 +22,8 @@ export class DiaryComponent implements OnInit {
 
   currentPage: number = 1;
   entries: Entry[] = [];
+  selectedEntry: Entry | null = null;
+  diaryType = "table";
 
   constructor(
     private readonly diary: DiaryService,
@@ -32,69 +34,83 @@ export class DiaryComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.authGuard.canActivate()) return;
-    console.log('yes');
+    console.log(this.selectedEntry);
 
     this.userService
       .getCurrentUser()
       .subscribe((responese) => (this.user = responese));
-
-    this.fetchEntries(this.offset, this.size, this.field, this.direction);
+    this.fetchEntries();
+    this.diary.getEntries().subscribe((entries) => {
+      this.entries = entries;
+      this.pages = [
+        ...Array.from(
+          { length: this.diary.getNumberOfPages()! },
+          (_, i) => i + 1
+        ),
+      ];
+      this.entries.forEach((entry) => {
+        this.calculator.calculateBMI(entry, this.user?.height);
+        this.calculator.calculateBMR(
+          entry,
+          this.user?.height,
+          this.user?.sex,
+          this.user?.dateOfBirth
+        );
+      });
+    });
   }
 
-  fetchEntries(
-    offset: number,
-    size: number,
-    field: string,
-    direction: string
-  ): void {
-    console.log(offset,size,field,direction);
-    this.diary
-      .getEntries(offset, size, field, direction)
-      .subscribe((response) => {
-        this.entries = response.entries;
-        this.pages = [
-          ...Array.from({ length: response.numberOfPages }, (_, i) => i + 1),
-        ];
-        console.log(response.numberOfPages);
-        console.log(this.pages);
-        this.entries.forEach((entry) => {
-          this.calculator.calculateBMI(entry, this.user?.height);
-          this.calculator.calculateBMR(
-            entry,
-            this.user?.height,
-            this.user?.sex,
-            this.user?.dateOfBirth
-          );
-        });
-      });
+  fetchEntries(): void {
+    this.diary.fetchEntries();
   }
 
   pageButtonClick($event: Event): void {
     const btnClicked = $event.currentTarget as HTMLButtonElement;
     const btnClickedPageNumber = Number(btnClicked.innerText);
-    
-    if(this.currentPage === btnClickedPageNumber) {
+
+    console.log(this.pages, this.currentPage);
+    if (
+      (this.currentPage === btnClickedPageNumber &&
+        this.entries.length === this.size) ||
+      (this.currentPage === this.pages![this.pages?.length! - 1] &&
+        this.currentPage === btnClickedPageNumber)
+    ) {
       return;
     }
-
     this.currentPage = btnClickedPageNumber;
-
-    this.fetchEntries(
-      this.currentPage - 1,
-      this.size,
-      this.field,
-      this.direction
-    );
+    this.diary.offset = btnClickedPageNumber - 1;
+    this.selectedEntry = null;
+    this.fetchEntries();
   }
 
   sizesValueChange($event: Event): void {
     const select = $event.currentTarget as HTMLSelectElement;
     this.size = Number(select.value);
-    this.fetchEntries(
-      this.currentPage - 1,
-      this.size,
-      this.field,
-      this.direction
-    );
+    this.selectedEntry = null;
+    this.fetchEntries();
+  }
+
+  entryClick($event: Event, entry: Entry): void {
+    const eventTarget = $event.target as HTMLInputElement;
+
+    console.log(entry.id, this.selectedEntry);
+    if (this.selectedEntry?.id === entry.id) {
+      eventTarget.checked = false;
+      this.selectedEntry = null;
+      return;
+    }
+    this.selectedEntry = entry;
+  }
+
+  deleteEntry(): void {
+    if (this.selectedEntry) {
+      this.diary.deleteEntry(this.selectedEntry.id as number);
+      this.selectedEntry = null;
+      this.fetchEntries();
+    }
+  }
+
+  toggleGraph(): void {
+    this.diaryType = this.diaryType === "table" ? "graph" : "table";
   }
 }

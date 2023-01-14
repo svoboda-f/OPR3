@@ -1,11 +1,15 @@
 import {
+  AfterViewInit,
   Component,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { tmpdir } from 'os';
 import { Observable, Subscription } from 'rxjs';
 import { Entry } from 'src/app/models/entry';
 import { DiaryService } from 'src/app/services/diary.service';
@@ -16,9 +20,22 @@ import { DiaryService } from 'src/app/services/diary.service';
 })
 export class NewEntryComponent implements OnInit, OnChanges {
   @Input() isDialogOpen?: boolean;
-  event?: Subscription;
 
-  constructor(private readonly diary: DiaryService) {}
+  today: Date = new Date();
+  dateText: string = this.today.toISOString().split('T')[0];
+
+  fg: FormGroup = this.formBuilder.group({
+    date: [this.today.toISOString(), [Validators.required]],
+    weight: [
+      undefined,
+      [Validators.required, Validators.min(1), Validators.max(500)],
+    ],
+  });
+
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly diary: DiaryService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -28,5 +45,24 @@ export class NewEntryComponent implements OnInit, OnChanges {
       // this.fg.reset();
       // this.isFirstStepInRegistration = true;
     }
+  }
+
+  dateInputClick($event: Event): void {
+    const target = $event.target as any;
+    target.showPicker();
+    console.log(target.value);
+  }
+
+  dateChange($event: Event): void {
+    const target = $event.target as HTMLInputElement;
+    this.dateText = target.value;
+  }
+
+  submit(): void {
+    const newEntry: Entry = {
+      date: this.fg.controls['date'].value,
+      weight: this.fg.controls['weight'].value
+    }
+    this.diary.newEntry(newEntry);
   }
 }

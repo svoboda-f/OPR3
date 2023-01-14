@@ -1,7 +1,7 @@
 export interface Entry {
-    id: number;
+    id?: number;
     date: Date;
     weight: number;
-    bmi: number;
-    bmr: number;
+    bmi?: number;
+    bmr?: number;
 }
