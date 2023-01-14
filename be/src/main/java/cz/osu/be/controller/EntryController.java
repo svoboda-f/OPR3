@@ -32,8 +32,8 @@ public class EntryController {
     }
 
     @DeleteMapping
-    public void deleteEntry(@RequestBody Entry entry) {
-        this.entryService.deleteEntry(entry);
+    public void deleteEntry(@RequestBody long entryId) {
+        this.entryService.deleteEntry(entryId);
     }
 
     @PatchMapping

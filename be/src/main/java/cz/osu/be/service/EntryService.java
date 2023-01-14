@@ -32,9 +32,11 @@ public class EntryService {
         return this.entryRepository.save(newEntry);
     }
 
-    public void deleteEntry(Entry entry) {
+    public void deleteEntry(long entryId) {
         User currentUser = this.authService.getCurrentUser();
-        currentUser.getUserInfo().getEntries().remove(entry);        
+        Entry entry = this.entryRepository.findById(entryId).get();
+        currentUser.getUserInfo().getEntries().remove(entry);
+        this.entryRepository.save(entry);        
     }
 
     public Entry updateEntry(Entry entry) {

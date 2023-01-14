@@ -21,7 +21,6 @@ import cz.osu.be.repository.UserRepository;
 import cz.osu.be.JwtTokenUtil;
 import cz.osu.be.model.User;
 import cz.osu.be.model.AppUserDetails;
-import cz.osu.be.model.Auth;
 
 @Service
 public class AuthService {
