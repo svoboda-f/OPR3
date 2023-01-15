@@ -58,7 +58,7 @@ public class AuthService {
         Optional<User> tmp = appUserRepository.findByUsername(user.getUsername());
 
         if (tmp.isPresent()) {
-            ret.put("error", String.format("User with username '%s' already exists", tmp.get().getUsername()));
+            ret.put("userAlreadyExist", String.format("User with username '%s' already exists", tmp.get().getUsername()));
             return ret;
         }
         UserInfo userInfo = user.getUserInfo();

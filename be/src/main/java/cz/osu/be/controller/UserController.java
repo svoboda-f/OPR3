@@ -35,7 +35,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody User user) {
         Map<String, Object> ret = authService.register(user);
-        if (ret.containsValue("error")) {
+        if (ret.containsKey("userAlreadyExist")) {
             return ResponseEntity.badRequest().body(ret);
         }
         return ResponseEntity.ok().body(ret);
