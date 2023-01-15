@@ -1,5 +1,5 @@
 <h3 class="text-lg font-bold">Registrace</h3>
-<div class="w-full flex">
+<div class="w-full flex" *ngIf="notRegistered">
   <ul class="steps mx-auto">
     <li class="step step-primary">Přihlašovací údaje</li>
     <li class="step" [ngClass]="{ 'step-primary': !isFirstStepInRegistration }">
@@ -7,7 +7,11 @@
     </li>
   </ul>
 </div>
-<form [formGroup]="fg" (ngSubmit)="submit()">
+<form
+  [formGroup]="fg"
+  (ngSubmit)="submit()"
+  *ngIf="notRegistered; else successfullyRegistered"
+>
   <div *ngIf="isFirstStepInRegistration; then firstStep; else info"></div>
   <ng-template #firstStep>
     <div class="form-control mx-auto w-fit">
@@ -19,13 +23,14 @@
         class="input input-bordered w-full max-w-xs"
         [ngClass]="{
           'input-error':
-            fg.controls['username'].touched && fg.controls['username'].invalid
+            (fg.controls['username'].touched &&
+              fg.controls['username'].invalid) ||
+            errors.usernameExist
         }"
         formControlName="username"
-        required
       />
       <label class="label">
-        <span class="label-text-alt" *ngIf="errors.usernameExist"
+        <span class="label-text-alt text-error" *ngIf="errors.usernameExist"
           >Uživatel s tímto jménem již existuje</span
         >
       </label>
@@ -69,7 +74,6 @@
             fg.controls['passwordAgain'].invalid &&
             fg.controls['passwordAgain'].touched
         }"
-        required
       />
       <label
         class="label"
@@ -95,13 +99,12 @@
       <select
         class="select select-bordered w-full max-w-xs"
         formControlName="sex"
-        required
         [ngClass]="{
           'select-error':
             fg.controls['sex'].touched && fg.controls['sex'].invalid
         }"
       >
-        <option disabled [defaultSelected]="true" value="">
+        <option disabled [defaultSelected]="fg.value.sex === null">
           Prosím vyberte...
         </option>
         <option value="male">Muž</option>
@@ -120,9 +123,6 @@
             fg.controls['height'].touched && fg.controls['height'].invalid
         }"
         formControlName="height"
-        min="50"
-        max="250"
-        required
       />
       <label class="label">
         <span class="label-text-alt"></span>
@@ -142,9 +142,6 @@
               fg.controls['dateOfBirth'].invalid
           }"
           formControlName="dateOfBirth"
-          min="50"
-          max="250"
-          required
           (click)="dateInputClick($event)"
           (change)="dateChange($event)"
         />
@@ -162,3 +159,23 @@
     </div>
   </ng-template>
 </form>
+<ng-template #successfullyRegistered>
+  <div class="alert alert-success shadow-lg">
+    <div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="stroke-current flex-shrink-0 h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span>Úspěšně zaregistrován, můžete se přihlásit!</span>
+    </div>
+  </div>
+</ng-template>

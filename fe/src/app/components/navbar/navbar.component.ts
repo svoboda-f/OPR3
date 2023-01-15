@@ -28,7 +28,6 @@ export class NavbarComponent implements OnInit {
     this.userService.refreshUser();
     this.user$ = this.userService.getCurrentUser();
     this.user$.subscribe((user) => (this.nicknameInitial = user?.username?.charAt(0)));
-    console.log(this.user$);
   }
 
   isActive(routerLink: string): boolean {

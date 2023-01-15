@@ -1,10 +1,12 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -20,6 +22,7 @@ import { DiaryService } from 'src/app/services/diary.service';
 })
 export class NewEntryComponent implements OnInit, OnChanges {
   @Input() isDialogOpen?: boolean;
+  @Output() closeDialog = new EventEmitter();
 
   today: Date = new Date();
   dateText: string = this.today.toISOString().split('T')[0];
@@ -42,8 +45,10 @@ export class NewEntryComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const isDialogOpen = changes['isDialogOpen'].currentValue;
     if (isDialogOpen) {
+      this.fg.patchValue({'weight': undefined, 'date': this.today.toISOString()});
+      // this.fg.markAsUntouched();
       // this.fg.reset();
-      // this.isFirstStepInRegistration = true;
+      console.log(this.fg.controls);
     }
   }
 
@@ -63,6 +68,12 @@ export class NewEntryComponent implements OnInit, OnChanges {
       date: this.fg.controls['date'].value,
       weight: this.fg.controls['weight'].value
     }
+    if(this.fg.invalid) {
+      console.log("invalid")
+      return;
+    }
     this.diary.newEntry(newEntry);
+    this.fg.patchValue({'weight': undefined, 'date': this.today.toISOString()});
+    this.closeDialog.emit();
   }
 }

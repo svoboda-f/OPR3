@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, ReplaySubject, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserInfo } from '../models/user-info';
@@ -16,7 +17,8 @@ export class UserService {
 
   constructor(
     private readonly localStorageService: LocalStorageService,
-    private readonly http: HttpClient
+    private readonly http: HttpClient,
+    private readonly router: Router
   ) {}
 
   headers = { 'access-control-allow-origin': 'http://localhost:4200/' };
@@ -29,8 +31,10 @@ export class UserService {
           this.currentUser.next(user);
         },
         error: (error) => {
-          console.log(error);
           this.clearUser();
+          if (this.router.url === '/diary' || this.router.url === '/profile') {
+            this.router.navigate(['/']);
+          }
         },
       });
   }

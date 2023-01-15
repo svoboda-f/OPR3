@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 
 import zoomPlugin from 'chartjs-plugin-zoom';
@@ -21,8 +21,8 @@ export class GraphComponent implements OnInit, AfterViewInit {
   lineChart: any;
 
   fg: FormGroup = this.formBuilder.group({
-    from: [undefined],
-    to: [undefined],
+    from: [undefined, Validators.required],
+    to: [undefined, Validators.required],
   });
   dateFromText: string = '';
   dateToText: string = '';
@@ -33,12 +33,15 @@ export class GraphComponent implements OnInit, AfterViewInit {
   maxWeight?: number;
   minWeight?: number;
 
+  noEntries: boolean | null = null;
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly diaryService: DiaryService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit(): void {
     Chart.register(...registerables);
@@ -46,23 +49,39 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   submit(): void {
+    if (this.fg.invalid) return;
+
+    let from = this.fg.controls['from'].value;
+    let to = this.fg.controls['to'].value;
+
+    if (Date.parse(from) > Date.parse(to)) {
+      from = this.fg.controls['to'].value;
+      to = this.fg.controls['from'].value;
+    }
+
     if (this.lineChart) this.lineChart.destroy();
+    this.noEntries = null;
     this.labels = [];
-    this.diaryService
-      .fetchEntriesBetween(
-        this.fg.controls['from'].value,
-        this.fg.controls['to'].value
-      )
-      .subscribe((entries) => {
-        
-        entries.forEach((entry) => {
-          this.labels?.push(entry.date + '');
-          this.data.push(entry.weight);
-        });
-        this.maxWeight = Math.ceil(Math.max(...this.data) / 5) * 5 + 5;
-        this.minWeight = Math.ceil(Math.min(...this.data) / 5) * 5 - 5;
-        this.makeGraph();
+    this.diaryService.fetchEntriesBetween(from, to).subscribe((entries) => {
+      if(entries.length === 0) {
+        this.noEntries = true;
+        return;
+      }
+      entries.sort((a, b) => {
+        const dateA = Date.parse(a.date + '');
+        const dateB = Date.parse(b.date + '');
+        if (dateA < dateB) return -1;
+        if (dateB < dateA) return 1;
+        return 0;
       });
+      entries.forEach((entry) => {
+        this.labels?.push(entry.date + '');
+        this.data.push(entry.weight);
+      });
+      this.maxWeight = Math.ceil(Math.max(...this.data) / 5) * 5 + 5;
+      this.minWeight = Math.ceil(Math.min(...this.data) / 5) * 5 - 5;
+      this.makeGraph();
+    });
   }
 
   makeGraph(): void {

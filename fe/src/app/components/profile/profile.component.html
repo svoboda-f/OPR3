@@ -1,1 +1,53 @@
-<p>profile works!</p>
+<div class="w-4/5 mx-auto flex justify-center">
+  <div>
+    <h1 class="text-base-content text-3xl font-bold text-center mb-5">Profil</h1>
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">Uživatelské jméno</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Type here"
+        class="input input-bordered w-full max-w-xs !cursor-default"
+        [defaultValue]="user?.username"
+        [disabled]="true"
+      />
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">Datum narození</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Type here"
+        class="input input-bordered w-full max-w-xs !cursor-default"
+        [defaultValue]="user?.dateOfBirth"
+        [disabled]="true"
+      />
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">Pohlaví</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Type here"
+        class="input input-bordered w-full max-w-xs !cursor-default"
+        [defaultValue]="sex"
+        [disabled]="true"
+      />
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">Výška</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Type here"
+        class="input input-bordered w-full max-w-xs !cursor-default"
+        [defaultValue]="user?.height"
+        [disabled]="true"
+      />
+    </div>
+  </div>
+</div>

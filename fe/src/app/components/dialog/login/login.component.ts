@@ -1,11 +1,13 @@
 import { DOCUMENT } from '@angular/common';
 import {
   Component,
+  EventEmitter,
   Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
@@ -20,6 +22,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit, OnChanges {
   @Input() isDialogOpen?: boolean;
+  @Output() closeDialog = new EventEmitter();
 
   fg: UntypedFormGroup = this.formBuilder.group({
     username: [undefined],
@@ -52,8 +55,7 @@ export class LoginComponent implements OnInit, OnChanges {
         next: (value) => {
           console.log(value);
           this.userService.refreshUser();
-          const dialog: HTMLInputElement | null = this.document.getElementById('auth-dialog') as HTMLInputElement;
-          dialog.checked = false;
+          this.closeDialog.emit()
         },
       });
   }

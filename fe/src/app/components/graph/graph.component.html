@@ -1,6 +1,6 @@
 <div class="mt-4">
   <form [formGroup]="fg" (ngSubmit)="submit()">
-    <div class="flex justify-between w-4/5 mx-auto">
+    <div class="flex justify-center gap-7 w-4/5 mx-auto">
       <div>
         <label class="label">
           <span class="label-text">Datum od:</span>
@@ -14,7 +14,7 @@
             (change)="dateFromChange($event)"
           />
           <span class="absolute top-3 left-5 pointer-events-none">{{
-              dateFromText
+            dateFromText
           }}</span>
         </div>
       </div>
@@ -31,7 +31,7 @@
             (change)="dateToChange($event)"
           />
           <span class="absolute top-3 left-5 pointer-events-none">{{
-              dateToText
+            dateToText
           }}</span>
         </div>
       </div>
@@ -40,5 +40,18 @@
       <button type="submit" class="btn btn-primary">Ukaž graf</button>
     </div>
   </form>
-  <canvas #lineCanvas></canvas>
+  <div
+    class="w-4/5 mx-auto"
+    *ngIf="noEntries === null; else noEntriesPlaceholder"
+  >
+    <canvas #lineCanvas></canvas>
+  </div>
+  <ng-template #noEntriesPlaceholder>
+    <div class="w-full flex justify-center">
+      <span class="text-base-content text-2xl text-center"
+        >Mezi daty {{ fg.controls["from"].value }} a
+        {{ fg.controls["to"].value }} nebyly nalezeny žádné záznamy</span
+      >
+    </div>
+  </ng-template>
 </div>

@@ -1,134 +1,138 @@
-<div>
-  <div class="tabs">
-    <button
-      id="calculator-tab"
-      class="tab tab-bordered tab-lg"
-      [ngClass]="active ? 'tab-active' : ''"
-      (click)="tabClick($event)"
-    >
-      Kalkulačka
-    </button>
-    <button
-      id="results-tab"
-      class="tab tab-bordered tab-lg"
-      [ngClass]="!active ? 'tab-active' : ''"
-      (click)="tabClick($event)"
-      *ngIf="entries.length > 0"
-    >
-      Výsledky
-    </button>
-  </div>
-  <ng-template [ngIf]="active" [ngIfElse]="results">
-    <div>
-      <form [formGroup]="calculatorResult" (ngSubmit)="calculate()">
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text"
-              >Věk <span class="text-error">*</span></span
-            >
-          </label>
-          <input
-            type="number"
-            placeholder="Věk"
-            class="input input-bordered w-full max-w-xs"
-            formControlName="age"
-            required
-          />
-          <label class="label">
-            <span class="label-text-alt">{{ ageError.message }}</span>
-          </label>
-        </div>
-        <div class="flex flex-row w-full max-w-xs">
-          <div class="w-1/2 flex items-center justify-center">
-            <label for="male" class="label-text pr-1">Muž</label>
-            <input
-              type="radio"
-              id="male"
-              value="male"
-              class="radio radio-primary"
-              formControlName="sex"
-              checked
-            />
-          </div>
-          <div class="w-1/2 flex items-center justify-center">
-            <label for="female" class="label-text pr-1">Žena</label>
-            <input
-              type="radio"
-              id="female"
-              value="female"
-              class="radio radio-primary"
-              formControlName="sex"
-            />
-          </div>
-        </div>
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text"
-              >Výška <span class="text-error">*</span></span
-            >
-          </label>
-          <input
-            type="number"
-            placeholder="Výška"
-            class="input input-bordered w-full max-w-xs"
-            formControlName="height"
-            required
-          />
-          <label class="label">
-            <span class="label-text-alt">{{ ageError.message }}</span>
-          </label>
-        </div>
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text"
-              >Hmotnost <span class="text-error">*</span></span
-            >
-          </label>
-          <input
-            type="number"
-            placeholder="Hmotnost"
-            class="input input-bordered w-full max-w-xs"
-            formControlName="weight"
-            required
-          />
-          <label class="label">
-            <span class="label-text-alt">{{ ageError.message }}</span>
-          </label>
-        </div>
-        <button class="btn btn-primary" type="submit">Vypočítat</button>
-      </form>
+<div class="w-4/5 flex mx-auto">
+  <div class="w-full grid justify-center">
+    <div class="tabs justify-center mb-5">
+      <button
+        id="calculator-tab"
+        class="tab tab-bordered tab-lg"
+        [ngClass]="active ? 'tab-active' : ''"
+        (click)="tabClick($event)"
+      >
+        Kalkulačka
+      </button>
+      <button
+        id="results-tab"
+        class="tab tab-bordered tab-lg"
+        [ngClass]="!active ? 'tab-active' : ''"
+        (click)="tabClick($event)"
+        *ngIf="entries.length > 0"
+      >
+        Výsledky
+      </button>
     </div>
-  </ng-template>
-  <ng-template #results>
-    <div>
-      <div class="overflow-x-auto">
-        <table class="table w-full">
-          <!-- head -->
-          <thead>
-            <tr>
-              <th>Datum</th>
-              <th>Věk</th>
-              <th>Pohlaví</th>
-              <th>Výška</th>
-              <th>Hmotnost</th>
-              <th>BMI</th>
-              <th>BMR</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let entry of entries">
-            <tr>
-              <td>{{entry.date}}</td>
-              <td>{{entry.age}}</td>
-              <td>{{entry.sex}}</td>
-              <td>{{entry.height}}</td>
-              <td>{{entry.weight}}</td>
-              <td>{{entry.bmi}}</td>
-              <td>{{entry.bmr}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <button class="btn btn-error" (click)="deleteCalculatorEntries()">SMAZAT ZÁZNAMY</button>
+    <ng-template [ngIf]="active" [ngIfElse]="results">
+      <div>
+        <form [formGroup]="calculatorResult" (ngSubmit)="calculate()">
+          <div class="form-control w-full max-w-xs">
+            <label class="label">
+              <span class="label-text"
+                >Věk <span class="text-error">*</span></span
+              >
+            </label>
+            <input
+              type="number"
+              placeholder="Věk"
+              class="input input-bordered w-full max-w-xs"
+              formControlName="age"
+              required
+            />
+            <label class="label">
+              <span class="label-text-alt">{{ ageError.message }}</span>
+            </label>
+          </div>
+          <div class="flex flex-row w-full max-w-xs">
+            <div class="w-1/2 flex items-center justify-center">
+              <label for="male" class="label-text pr-1">Muž</label>
+              <input
+                type="radio"
+                id="male"
+                value="male"
+                class="radio radio-primary"
+                formControlName="sex"
+                checked
+              />
+            </div>
+            <div class="w-1/2 flex items-center justify-center">
+              <label for="female" class="label-text pr-1">Žena</label>
+              <input
+                type="radio"
+                id="female"
+                value="female"
+                class="radio radio-primary"
+                formControlName="sex"
+              />
+            </div>
+          </div>
+          <div class="form-control w-full max-w-xs">
+            <label class="label">
+              <span class="label-text"
+                >Výška <span class="text-error">*</span></span
+              >
+            </label>
+            <input
+              type="number"
+              placeholder="Výška"
+              class="input input-bordered w-full max-w-xs"
+              formControlName="height"
+              required
+            />
+            <label class="label">
+              <span class="label-text-alt">{{ ageError.message }}</span>
+            </label>
+          </div>
+          <div class="form-control w-full max-w-xs">
+            <label class="label">
+              <span class="label-text"
+                >Hmotnost <span class="text-error">*</span></span
+              >
+            </label>
+            <input
+              type="number"
+              placeholder="Hmotnost"
+              class="input input-bordered w-full max-w-xs"
+              formControlName="weight"
+              required
+            />
+            <label class="label">
+              <span class="label-text-alt">{{ ageError.message }}</span>
+            </label>
+          </div>
+          <button class="btn btn-primary" type="submit">Vypočítat</button>
+        </form>
       </div>
-    </div>
-  </ng-template>
+    </ng-template>
+    <ng-template #results>
+      <div>
+        <div class="overflow-x-auto">
+          <table class="table w-full">
+            <!-- head -->
+            <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Věk</th>
+                <th>Pohlaví</th>
+                <th>Výška</th>
+                <th>Hmotnost</th>
+                <th>BMI</th>
+                <th>BMR</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let entry of entries">
+              <tr>
+                <td>{{ entry.date }}</td>
+                <td>{{ entry.age }}</td>
+                <td>{{ entry.sex }}</td>
+                <td>{{ entry.height }}</td>
+                <td>{{ entry.weight }}</td>
+                <td>{{ entry.bmi }}</td>
+                <td>{{ entry.bmr }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-error" (click)="deleteCalculatorEntries()">
+            SMAZAT ZÁZNAMY
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
 </div>

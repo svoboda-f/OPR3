@@ -1,11 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Entry } from '../models/entry';
 import { ServerResponse } from '../models/server-response';
-import { CalculatorService } from './calculator.service';
-import { UserService } from './user.service';
 
 const SERVER_URL = environment.serverUrl;
 
@@ -25,14 +23,12 @@ export class DiaryService {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly calculator: CalculatorService,
-    private readonly userService: UserService
   ) {}
 
   newEntry(entry: Entry): void {
     this.http.post<Entry>(`${SERVER_URL}/entries`, entry).subscribe({
-      next: (response) => {
-        this.entries.subscribe((entries) => entries.push(response));
+      next: () => {
+        this.fetchEntries();
       },
     });
   }
@@ -45,7 +41,7 @@ export class DiaryService {
     this.http
       .request('delete', `${SERVER_URL}/entries`, { body: entryId })
       .subscribe({
-        next: (resposnse) => {
+        next: () => {
           this.entries.next(
             this.entries.getValue().filter((entry) => entry.id !== entryId)
           );

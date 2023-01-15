@@ -50,6 +50,7 @@ export class DiaryComponent implements OnInit {
         ),
       ];
       this.entries.forEach((entry) => {
+        console.log(this.user?.height);
         this.calculator.calculateBMI(entry, this.user?.height);
         this.calculator.calculateBMR(
           entry,
@@ -65,28 +66,24 @@ export class DiaryComponent implements OnInit {
     this.diary.fetchEntries();
   }
 
-  pageButtonClick($event: Event): void {
-    const btnClicked = $event.currentTarget as HTMLButtonElement;
-    const btnClickedPageNumber = Number(btnClicked.innerText);
+  btnNextClick(): void {
+    this.currentPage++;
+    this.diary.offset++;
+    this.selectedEntry = null;
+    this.fetchEntries();
+    console.log(this.entries);
+  }
 
-    console.log(this.pages, this.currentPage);
-    if (
-      (this.currentPage === btnClickedPageNumber &&
-        this.entries.length === this.size) ||
-      (this.currentPage === this.pages![this.pages?.length! - 1] &&
-        this.currentPage === btnClickedPageNumber)
-    ) {
-      return;
-    }
-    this.currentPage = btnClickedPageNumber;
-    this.diary.offset = btnClickedPageNumber - 1;
+  btnPreviousClick(): void {
+    this.currentPage--;
+    this.diary.offset--;
     this.selectedEntry = null;
     this.fetchEntries();
   }
 
   sizesValueChange($event: Event): void {
     const select = $event.currentTarget as HTMLSelectElement;
-    this.size = Number(select.value);
+    this.diary.size = Number(select.value);
     this.selectedEntry = null;
     this.fetchEntries();
   }

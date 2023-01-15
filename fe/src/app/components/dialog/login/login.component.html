@@ -1,34 +1,36 @@
 <h3 class="text-lg font-bold">Přihlášení</h3>
 <form [formGroup]="fg" (ngSubmit)="submit()">
-  <div class="form-control w-full max-w-xs">
-    <label class="label">
-      <span class="label-text">Uživ. jméno</span>
-    </label>
-    <input
-      type="text"
-      class="input input-bordered w-full max-w-xs"
-      formControlName="username"
-      required
-    />
-    <label class="label">
-      <span class="label-text-alt"></span>
-    </label>
-  </div>
-  <div class="form-control w-full max-w-xs">
-    <label class="label">
-      <span class="label-text">Heslo</span>
-    </label>
-    <input
-      type="password"
-      class="input input-bordered w-full max-w-xs"
-      formControlName="password"
-      required
-    />
-    <label class="label">
-      <span class="label-text-alt"></span>
-    </label>
-  </div>
-  <div>
-    <button type="submit" class="btn btn-primary">Přihlásit se</button>
+  <div class="w-fit mx-auto">
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">Uživ. jméno</span>
+      </label>
+      <input
+        type="text"
+        class="input input-bordered w-full max-w-xs"
+        formControlName="username"
+        required
+      />
+      <label class="label">
+        <span class="label-text-alt"></span>
+      </label>
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">Heslo</span>
+      </label>
+      <input
+        type="password"
+        class="input input-bordered w-full max-w-xs"
+        formControlName="password"
+        required
+      />
+      <label class="label">
+        <span class="label-text-alt"></span>
+      </label>
+    </div>
+    <div class="flex justify-center">
+      <button type="submit" class="btn btn-primary">Přihlásit se</button>
+    </div>
   </div>
 </form>
