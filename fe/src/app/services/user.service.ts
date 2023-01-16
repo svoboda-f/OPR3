@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, ReplaySubject, tap } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserInfo } from '../models/user-info';
 import { LocalStorageService } from './local-storage.service';
@@ -30,7 +30,7 @@ export class UserService {
         next: (user) => {
           this.currentUser.next(user);
         },
-        error: (error) => {
+        error: () => {
           this.clearUser();
           if (this.router.url === '/diary' || this.router.url === '/profile') {
             this.router.navigate(['/']);

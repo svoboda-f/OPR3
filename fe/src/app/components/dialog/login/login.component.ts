@@ -1,18 +1,13 @@
-import { DOCUMENT } from '@angular/common';
 import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
@@ -21,7 +16,7 @@ import { UserService } from 'src/app/services/user.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
 })
-export class LoginComponent implements OnInit, OnChanges {
+export class LoginComponent implements OnChanges {
   @Input() isDialogOpen?: boolean;
   @Output() closeDialog = new EventEmitter<boolean>();
 
@@ -37,8 +32,6 @@ export class LoginComponent implements OnInit, OnChanges {
     private readonly authService: AuthService,
     private readonly userService: UserService
   ) {}
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const isDialogOpen = changes['isDialogOpen'].currentValue;

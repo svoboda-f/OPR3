@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,7 +14,7 @@ import { DiaryService } from 'src/app/services/diary.service';
   selector: 'app-graph',
   templateUrl: './graph.component.html',
 })
-export class GraphComponent implements OnInit, AfterViewInit {
+export class GraphComponent implements AfterViewInit {
   @ViewChild('lineCanvas') lineCanvas!: ElementRef;
   lineChart: any;
 
@@ -38,9 +37,6 @@ export class GraphComponent implements OnInit, AfterViewInit {
     private readonly formBuilder: FormBuilder,
     private readonly diaryService: DiaryService
   ) {}
-
-  ngOnInit(): void {
-  }
 
   ngAfterViewInit(): void {
     Chart.register(...registerables);

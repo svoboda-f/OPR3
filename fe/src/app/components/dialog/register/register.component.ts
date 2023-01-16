@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   EventEmitter,
@@ -18,7 +17,7 @@ import { AuthService } from 'src/app/services/auth.service';
   selector: 'app-register',
   templateUrl: './register.component.html',
 })
-export class RegisterComponent implements OnInit, OnChanges {
+export class RegisterComponent implements OnChanges {
   @Input() isDialogOpen?: boolean;
   @Output() closeDialog = new EventEmitter<boolean>();
 
@@ -54,8 +53,6 @@ export class RegisterComponent implements OnInit, OnChanges {
       this.resetForm();
     }
   }
-
-  ngOnInit(): void {}
 
   next($event: Event): void {
     $event.preventDefault();

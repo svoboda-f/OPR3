@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DialogType } from 'src/app/enums/dialog-type';
 import { Theme } from 'src/app/enums/theme';
 import { UserInfo } from 'src/app/models/user-info';
@@ -51,9 +51,5 @@ export class NavbarComponent implements OnInit {
 
   swapTheme(): void {
     this.themeService.swapTheme();
-  }
-
-  dialogShouldRender(): Observable<boolean> {
-    return of(true);
   }
 }

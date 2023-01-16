@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -15,7 +14,7 @@ import { DiaryService } from 'src/app/services/diary.service';
   selector: 'app-new-entry',
   templateUrl: './new-entry.component.html',
 })
-export class NewEntryComponent implements OnInit, OnChanges {
+export class NewEntryComponent implements OnChanges {
   @Input() isDialogOpen?: boolean;
   @Output() closeDialog = new EventEmitter<boolean>();
 
@@ -34,8 +33,6 @@ export class NewEntryComponent implements OnInit, OnChanges {
     private readonly formBuilder: UntypedFormBuilder,
     private readonly diary: DiaryService
   ) {}
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const isDialogOpen = changes['isDialogOpen'].currentValue;

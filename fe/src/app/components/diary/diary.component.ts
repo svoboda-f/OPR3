@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Entry } from 'src/app/models/entry';
 import { UserInfo } from 'src/app/models/user-info';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
@@ -62,7 +62,6 @@ export class DiaryComponent implements OnInit {
     this.diary.offset++;
     this.selectedEntry = null;
     this.fetchEntries();
-    console.log(this.currentPage, this.diary.offset);
   }
 
   btnPreviousClick(): void {
