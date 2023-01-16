@@ -5,24 +5,24 @@
     id="auth-dialog"
     class="modal-toggle"
     (change)="dialogClose($event)"
-    [checked]="dialog"
+    #dialog
   />
   <label for="auth-dialog" class="modal cursor-pointer">
     <label class="modal-box relative" for="totalrandomstring">
       <app-login
         [isDialogOpen]="isDialogOpen"
         *ngIf="!(user | async) && dialogType === 'login'"
-        (closeDialog)="closeDialog($event)"
+        (closeDialog)="closeDialog()"
       ></app-login>
       <app-register
         [isDialogOpen]="isDialogOpen"
         *ngIf="!(user | async) && dialogType === 'register'"
-        (closeDialog)="closeDialog($event)"
+        (closeDialog)="closeDialog()"
       ></app-register>
       <app-new-entry
         [isDialogOpen]="isDialogOpen"
         *ngIf="user | async"
-        (closeDialog)="closeDialog($event)"
+        (closeDialog)="closeDialog()"
       ></app-new-entry>
     </label>
   </label>

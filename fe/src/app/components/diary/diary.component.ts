@@ -14,11 +14,9 @@ export class DiaryComponent implements OnInit {
   user?: UserInfo;
 
   pages?: number[];
-  offset: number = 0;
+  numberOfPages?: number | null;
   sizes: number[] = [5, 10, 20];
   size: number = this.sizes[0];
-  field: string = 'date';
-  direction: string = 'desc';
 
   currentPage: number = 1;
   entries: Entry[] = [];
@@ -35,7 +33,6 @@ export class DiaryComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.authGuard.canActivate()) return;
-    console.log(this.selectedEntry);
 
     this.userService
       .getCurrentUser()
@@ -43,14 +40,8 @@ export class DiaryComponent implements OnInit {
     this.fetchEntries();
     this.diary.getEntries().subscribe((entries) => {
       this.entries = entries;
-      this.pages = [
-        ...Array.from(
-          { length: this.diary.getNumberOfPages()! },
-          (_, i) => i + 1
-        ),
-      ];
+      this.numberOfPages = this.diary.getNumberOfPages();
       this.entries.forEach((entry) => {
-        console.log(this.user?.height);
         this.calculator.calculateBMI(entry, this.user?.height);
         this.calculator.calculateBMR(
           entry,
@@ -71,7 +62,7 @@ export class DiaryComponent implements OnInit {
     this.diary.offset++;
     this.selectedEntry = null;
     this.fetchEntries();
-    console.log(this.entries);
+    console.log(this.currentPage, this.diary.offset);
   }
 
   btnPreviousClick(): void {
@@ -90,8 +81,7 @@ export class DiaryComponent implements OnInit {
 
   entryClick($event: Event, entry: Entry): void {
     const eventTarget = $event.target as HTMLInputElement;
-
-    console.log(entry.id, this.selectedEntry);
+    
     if (this.selectedEntry?.id === entry.id) {
       eventTarget.checked = false;
       this.selectedEntry = null;
@@ -105,6 +95,7 @@ export class DiaryComponent implements OnInit {
       this.diary.deleteEntry(this.selectedEntry.id as number);
       this.selectedEntry = null;
       this.fetchEntries();
+      this.numberOfPages = this.diary.getNumberOfPages();
     }
   }
 

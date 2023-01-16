@@ -33,10 +33,21 @@
               placeholder="Věk"
               class="input input-bordered w-full max-w-xs"
               formControlName="age"
-              required
+              [ngClass]="{
+                'input-error':
+                  calculatorResult.controls['age'].touched &&
+                  calculatorResult.controls['age'].invalid
+              }"
             />
             <label class="label">
-              <span class="label-text-alt">{{ ageError.message }}</span>
+              <span
+                class="label-text-alt text-error"
+                *ngIf="
+                  calculatorResult.controls['age'].touched &&
+                  calculatorResult.controls['age'].invalid
+                "
+                >Věk může být v rozemezí 1 a 110</span
+              >
             </label>
           </div>
           <div class="flex flex-row w-full max-w-xs">
@@ -48,7 +59,7 @@
                 value="male"
                 class="radio radio-primary"
                 formControlName="sex"
-                checked
+                [defaultChecked]="true"
               />
             </div>
             <div class="w-1/2 flex items-center justify-center">
@@ -73,10 +84,21 @@
               placeholder="Výška"
               class="input input-bordered w-full max-w-xs"
               formControlName="height"
-              required
+              [ngClass]="{
+                'input-error':
+                  calculatorResult.controls['height'].touched &&
+                  calculatorResult.controls['height'].invalid
+              }"
             />
             <label class="label">
-              <span class="label-text-alt">{{ ageError.message }}</span>
+              <span
+                class="label-text-alt text-error"
+                *ngIf="
+                  calculatorResult.controls['height'].touched &&
+                  calculatorResult.controls['height'].invalid
+                "
+                >Výška může být v rozmezí 1 a 250 cm</span
+              >
             </label>
           </div>
           <div class="form-control w-full max-w-xs">
@@ -90,10 +112,21 @@
               placeholder="Hmotnost"
               class="input input-bordered w-full max-w-xs"
               formControlName="weight"
-              required
+              [ngClass]="{
+                'input-error':
+                  calculatorResult.controls['weight'].touched &&
+                  calculatorResult.controls['weight'].invalid
+              }"
             />
             <label class="label">
-              <span class="label-text-alt">{{ ageError.message }}</span>
+              <span
+                class="label-text-alt text-error"
+                *ngIf="
+                  calculatorResult.controls['weight'].touched &&
+                  calculatorResult.controls['weight'].invalid
+                "
+                >Hmotnost může být v rozmezí 1 a 500 kg</span
+              >
             </label>
           </div>
           <button class="btn btn-primary" type="submit">Vypočítat</button>

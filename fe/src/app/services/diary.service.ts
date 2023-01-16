@@ -12,7 +12,7 @@ const SERVER_URL = environment.serverUrl;
 })
 export class DiaryService {
   private entries: BehaviorSubject<Entry[]> = new BehaviorSubject<Entry[]>([]);
-  private numberOfPages: number | null = null;
+  private numberOfPages: number = 0;
 
   offset: number = 0;
   sizes: number[] = [5,10,20];
@@ -73,7 +73,7 @@ export class DiaryService {
     return this.entries.asObservable();
   }
 
-  getNumberOfPages(): number | null {
+  getNumberOfPages(): number {
     return this.numberOfPages;
   }
 }

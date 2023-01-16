@@ -12,6 +12,10 @@
             formControlName="from"
             (click)="dateFromInputClick($event)"
             (change)="dateFromChange($event)"
+            [ngClass]="{
+              'input-error':
+                fg.controls['from'].touched && fg.controls['from'].invalid
+            }"
           />
           <span class="absolute top-3 left-5 pointer-events-none">{{
             dateFromText
@@ -29,6 +33,10 @@
             formControlName="to"
             (click)="dateToInputClick($event)"
             (change)="dateToChange($event)"
+            [ngClass]="{
+              'input-error':
+                fg.controls['to'].touched && fg.controls['to'].invalid
+            }"
           />
           <span class="absolute top-3 left-5 pointer-events-none">{{
             dateToText

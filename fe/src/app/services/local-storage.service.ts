@@ -17,7 +17,6 @@ export class LocalStorageService {
     const theme = localStorage.getItem(THEME);
     
     if ((theme !== Theme.DARK && theme !== Theme.LIGHT) || !theme) {
-      console.log('No theme, setting theme to light theme');
       this.setTheme(Theme.LIGHT);
       return Theme.LIGHT;
     }

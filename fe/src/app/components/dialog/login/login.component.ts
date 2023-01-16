@@ -1,4 +1,5 @@
 import { DOCUMENT } from '@angular/common';
+import { HttpStatusCode } from '@angular/common/http';
 import {
   Component,
   EventEmitter,
@@ -10,7 +11,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 
 import { AuthService } from 'src/app/services/auth.service';
@@ -22,18 +23,19 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit, OnChanges {
   @Input() isDialogOpen?: boolean;
-  @Output() closeDialog = new EventEmitter();
+  @Output() closeDialog = new EventEmitter<boolean>();
+
+  invalidCredentialsError: boolean | null = null;
 
   fg: UntypedFormGroup = this.formBuilder.group({
-    username: [undefined],
-    password: [undefined],
+    username: [undefined, Validators.required],
+    password: [undefined, Validators.required],
   });
 
   constructor(
     private readonly formBuilder: UntypedFormBuilder,
     private readonly authService: AuthService,
-    private readonly userService: UserService,
-    @Inject(DOCUMENT) public document: Document
+    private readonly userService: UserService
   ) {}
 
   ngOnInit(): void {}
@@ -41,11 +43,14 @@ export class LoginComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const isDialogOpen = changes['isDialogOpen'].currentValue;
     if (isDialogOpen) {
+      this.invalidCredentialsError = null;
       this.fg.reset();
     }
   }
 
   submit(): void {
+    this.fg.markAllAsTouched();
+    if(this.fg.invalid) return;
     this.authService
       .login(
         this.fg.controls['username'].value,
@@ -53,10 +58,15 @@ export class LoginComponent implements OnInit, OnChanges {
       )
       .subscribe({
         next: (value) => {
-          console.log(value);
+          this.invalidCredentialsError = null;
           this.userService.refreshUser();
-          this.closeDialog.emit()
+          this.closeDialog.emit(false);
         },
+        error: (error) =>{
+          if(error.status === HttpStatusCode.Unauthorized && 'error' in error.error) {
+            this.invalidCredentialsError = true;
+          }
+        }
       });
   }
 }

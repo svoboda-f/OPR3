@@ -12,10 +12,8 @@ export class CalculatorService {
   calculateBMI(entry: CalculatorEntry | Entry, height: number = 0) {
     const _height = 'height' in entry ? entry.height : height;
     const heightInMeters = _height / 100;
-    console.log(heightInMeters);
     entry.bmi =
       Math.round((entry.weight / (heightInMeters * heightInMeters)) * 10) / 10;
-      console.log(entry.bmi);
   }
 
   calculateBMR(entry: CalculatorEntry | Entry, height: number = 0, sex: Sex = Sex.MALE, dateOfBirth: Date = new Date()) {

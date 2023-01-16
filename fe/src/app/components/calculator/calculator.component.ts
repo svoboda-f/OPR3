@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { Sex } from 'src/app/enums/sex';
 import { CalculatorEntry } from 'src/app/models/calculator-entry';
 import { CalculatorService } from 'src/app/services/calculator.service';
@@ -11,19 +16,22 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 })
 export class CalculatorComponent implements OnInit {
   active: boolean = true;
-
-  ageError = {
-    type: 'empty',
-    message: '',
-  };
-
   entries: CalculatorEntry[] = [];
 
   calculatorResult: UntypedFormGroup = this.formBuilder.group({
-    age: new UntypedFormControl(undefined),
-    sex: new UntypedFormControl('male'),
-    height: new UntypedFormControl(undefined),
-    weight: new UntypedFormControl(undefined),
+    age: [
+      undefined,
+      [Validators.required, Validators.min(1), Validators.max(110)],
+    ],
+    sex: ['male', [Validators.required, Validators.pattern(/male|female/)]],
+    height: [
+      undefined,
+      [Validators.required, Validators.min(1), Validators.max(250)],
+    ],
+    weight: [
+      undefined,
+      [Validators.required, Validators.min(1), Validators.max(500)],
+    ],
   });
 
   constructor(
@@ -39,11 +47,19 @@ export class CalculatorComponent implements OnInit {
   tabClick($event: Event): void {
     const event = $event.target as HTMLButtonElement;
     this.active = event.id === 'calculator-tab';
+    if (this.active) {
+      this.calculatorResult.patchValue({ sex: 'male' });
+    }
   }
 
   calculate(): void {
+    this.calculatorResult.markAllAsTouched();
+    if (this.calculatorResult.invalid) return;
     const date = new Date().toISOString().split('T')[0];
-    const sex = this.calculatorResult.controls['sex'].value === 'male' ? Sex.MALE : Sex.FEMALE;
+    const sex =
+      this.calculatorResult.controls['sex'].value === 'male'
+        ? Sex.MALE
+        : Sex.FEMALE;
     const entry: CalculatorEntry = {
       date: date,
       age: this.calculatorResult.controls['age'].value,
@@ -54,7 +70,7 @@ export class CalculatorComponent implements OnInit {
     this.calculatorService.calculateBMI(entry);
     this.calculatorService.calculateBMR(entry);
     this.entries.unshift(entry);
-    if(this.entries.length > 5) {
+    if (this.entries.length > 5) {
       this.entries.pop();
     }
     this.localStorageService.saveCalculatorEntries(this.entries);
@@ -66,6 +82,6 @@ export class CalculatorComponent implements OnInit {
     this.localStorageService.deleteCalculatorEntries();
     this.entries = [];
     this.active = true;
-    this.calculatorResult.patchValue({sex: 'male'});
+    this.calculatorResult.patchValue({ sex: 'male' });
   }
 }

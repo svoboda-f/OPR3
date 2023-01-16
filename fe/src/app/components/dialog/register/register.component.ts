@@ -20,7 +20,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent implements OnInit, OnChanges {
   @Input() isDialogOpen?: boolean;
-  @Output() closeDialog = new EventEmitter();
+  @Output() closeDialog = new EventEmitter<boolean>();
 
   fg: UntypedFormGroup = this.formBuilder.group({
     username: [undefined, [Validators.required]],
@@ -59,7 +59,6 @@ export class RegisterComponent implements OnInit, OnChanges {
 
   next($event: Event): void {
     $event.preventDefault();
-    console.log(this.fg.value.sex);
     this.fg.controls['username'].markAsTouched();
     this.fg.controls['password'].markAsTouched();
     this.fg.controls['passwordAgain'].markAsTouched();
@@ -97,7 +96,6 @@ export class RegisterComponent implements OnInit, OnChanges {
   }
 
   submit(): void {
-    console.log(this.fg.value);
     if (this.hasErrors()) return;
     this.authService
       .register(
@@ -114,7 +112,7 @@ export class RegisterComponent implements OnInit, OnChanges {
           this.resetForm();
           this.notRegistered = false;
           setTimeout(() => {
-            this.closeDialog.emit();
+            this.closeDialog.emit(false);
             this.notRegistered = true;
           }, 5000);
         },

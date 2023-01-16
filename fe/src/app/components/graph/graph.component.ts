@@ -9,7 +9,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 
 import zoomPlugin from 'chartjs-plugin-zoom';
-import { Entry } from 'src/app/models/entry';
 import { DiaryService } from 'src/app/services/diary.service';
 
 @Component({
@@ -49,6 +48,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   submit(): void {
+    this.fg.markAllAsTouched();
     if (this.fg.invalid) return;
 
     let from = this.fg.controls['from'].value;
@@ -67,6 +67,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
         this.noEntries = true;
         return;
       }
+      
       entries.sort((a, b) => {
         const dateA = Date.parse(a.date + '');
         const dateB = Date.parse(b.date + '');
@@ -119,6 +120,9 @@ export class GraphComponent implements OnInit, AfterViewInit {
           y: {
             min: this.minWeight,
             max: this.maxWeight,
+            ticks: {
+              stepSize: 5
+            }
           },
         },
         plugins: {
@@ -134,7 +138,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
             },
             pan: {
               enabled: true,
-              mode: 'y',
+              mode: 'xy',
             },
             limits: {
               y: {

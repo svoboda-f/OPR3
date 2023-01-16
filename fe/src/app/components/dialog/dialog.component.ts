@@ -12,8 +12,7 @@ export class DialogComponent implements OnInit {
 
   isDialogOpen: boolean = false;
   @Input() dialogType?: DialogType;
-
-  dialog: boolean = false;
+  @ViewChild('dialog') dialogRef!: ElementRef<HTMLInputElement>;
 
   constructor() {}
 
@@ -26,7 +25,7 @@ export class DialogComponent implements OnInit {
     this.isDialogOpen = target.checked;
   }
 
-  closeDialog(value: boolean) {
-    this.dialog = value;
+  closeDialog() {
+    this.dialogRef.nativeElement.checked = false;
   }
 }

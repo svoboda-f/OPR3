@@ -1,18 +1,13 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { tmpdir } from 'os';
-import { Observable, Subscription } from 'rxjs';
 import { Entry } from 'src/app/models/entry';
 import { DiaryService } from 'src/app/services/diary.service';
 
@@ -22,7 +17,7 @@ import { DiaryService } from 'src/app/services/diary.service';
 })
 export class NewEntryComponent implements OnInit, OnChanges {
   @Input() isDialogOpen?: boolean;
-  @Output() closeDialog = new EventEmitter();
+  @Output() closeDialog = new EventEmitter<boolean>();
 
   today: Date = new Date();
   dateText: string = this.today.toISOString().split('T')[0];
@@ -46,16 +41,13 @@ export class NewEntryComponent implements OnInit, OnChanges {
     const isDialogOpen = changes['isDialogOpen'].currentValue;
     if (isDialogOpen) {
       this.fg.patchValue({'weight': undefined, 'date': this.today.toISOString()});
-      // this.fg.markAsUntouched();
-      // this.fg.reset();
-      console.log(this.fg.controls);
+      this.fg.markAsUntouched();
     }
   }
 
   dateInputClick($event: Event): void {
     const target = $event.target as any;
     target.showPicker();
-    console.log(target.value);
   }
 
   dateChange($event: Event): void {
@@ -64,16 +56,17 @@ export class NewEntryComponent implements OnInit, OnChanges {
   }
 
   submit(): void {
+    this.fg.markAllAsTouched();
     const newEntry: Entry = {
       date: this.fg.controls['date'].value,
       weight: this.fg.controls['weight'].value
     }
     if(this.fg.invalid) {
-      console.log("invalid")
       return;
     }
     this.diary.newEntry(newEntry);
     this.fg.patchValue({'weight': undefined, 'date': this.today.toISOString()});
-    this.closeDialog.emit();
+    this.fg.markAsUntouched();
+    this.closeDialog.emit(false);
   }
 }

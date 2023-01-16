@@ -1,8 +1,14 @@
 <div class="h-5/6 w-4/5 flex mx-auto">
   <div class="w-full">
-    <button class="btn btn-secondary btn-sm" (click)="toggleGraph()">
-      {{ toggleButtonText }}
-    </button>
+    <div class="flex justify-center mb-3">
+      <button
+        class="btn btn-secondary btn-sm"
+        [ngClass]="{ 'btn-disabled': numberOfPages === 0 }"
+        (click)="toggleGraph()"
+      >
+        {{ toggleButtonText }}
+      </button>
+    </div>
     <ng-container *ngIf="diaryType === 'table'; else graph">
       <div class="overflow-x-auto w-full max-h-[70%]">
         <table class="table w-full">
@@ -35,6 +41,11 @@
               <td>{{ entry.bmr }}</td>
             </tr>
           </tbody>
+          <tbody *ngIf="numberOfPages === 0">
+            <tr>
+              <td colspan="5" class="text-center font-bold">Žádné záznamy</td>
+            </tr>
+          </tbody>
           <tfoot>
             <tr>
               <th></th>
@@ -46,7 +57,7 @@
           </tfoot>
         </table>
       </div>
-      <div class="grid grid-cols-3 mt-4">
+      <div class="grid grid-cols-3 mt-4" *ngIf="numberOfPages !== 0">
         <div class="justify-self-start">
           <select
             class="select select-bordered w-fit"
@@ -66,7 +77,7 @@
           <button class="btn">{{ currentPage }}</button>
           <button
             class="btn"
-            [ngClass]="{ 'btn-disabled': pages?.length === currentPage }"
+            [ngClass]="{ 'btn-disabled': numberOfPages === currentPage }"
             (click)="btnNextClick()"
           >
             »
@@ -81,21 +92,22 @@
         </button>
         <div class="" *ngIf="selectedEntry === null"></div>
       </div>
-      <label
-        for="auth-dialog"
-        class="btn btn-circle btn-lg btn-secondary absolute right-5 bottom-5"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48">
-          <path
-            d="M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z"
-            class="fill-secondary-content"
-          />
-          <path fill="none" d="M0 0h48v48H0z" />
-        </svg>
-      </label>
     </ng-container>
     <ng-template #graph>
       <app-graph></app-graph>
     </ng-template>
   </div>
+  <label
+    for="auth-dialog"
+    class="btn btn-circle btn-lg btn-secondary absolute right-5 bottom-5"
+    *ngIf="diaryType === 'table'"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+      <path
+        d="M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z"
+        class="fill-secondary-content"
+      />
+      <path fill="none" d="M0 0h48v48H0z" />
+    </svg>
+  </label>
 </div>

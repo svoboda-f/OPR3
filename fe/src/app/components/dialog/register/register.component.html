@@ -43,20 +43,17 @@
         type="password"
         class="input input-bordered w-full max-w-xs"
         formControlName="password"
-        minlength="8"
         [ngClass]="{
           'input-error':
             fg.controls['password'].touched && fg.controls['password'].invalid
         }"
-        required
       />
-      <label
-        class="label"
-        *ngIf="
-          fg.controls['password'].touched && fg.controls['password'].invalid
-        "
-      >
-        <span class="label-text-alt text-error"
+      <label class="label">
+        <span
+          class="label-text-alt text-error"
+          *ngIf="
+            fg.controls['password'].touched && fg.controls['password'].invalid
+          "
           >Heslo musí být dlouhé alespoň 8 znaků</span
         >
       </label>

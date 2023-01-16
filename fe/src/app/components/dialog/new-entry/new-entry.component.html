@@ -13,7 +13,6 @@
             fg.controls['date'].touched && fg.controls['date'].invalid
         }"
         formControlName="date"
-        
         [value]="today.toISOString()" 
         (click)="dateInputClick($event)"
         (change)="dateChange($event)"
